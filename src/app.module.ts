@@ -10,15 +10,15 @@ import { AppService } from './app.service';
 import { PostsModule } from './posts/posts.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthenticationModule } from './authentication/authentication.module';
-import { UsersModule } from './users/users.module';
 
 import { ExceptionsLoggerFilter } from './utils/filters/exceptions-logger.filter';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
-    UsersModule,
     PostsModule,
     AuthenticationModule,
+    CategoriesModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         JWT_SECRET: Joi.string().required(),

@@ -7,6 +7,7 @@ import {
   Delete,
   UseGuards,
   Patch,
+  Req,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -15,6 +16,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { FindOneParams } from 'src/utils/validators/param/find-one-params';
 
 import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
+import { RequestWithUser } from 'src/authentication/types/request-with-user';
 
 @Controller('posts')
 export class PostsController {
@@ -32,8 +34,8 @@ export class PostsController {
 
   @Post()
   @UseGuards(JwtAuthenticationGuard)
-  async createPost(@Body() post: CreatePostDto) {
-    return this.postsService.createPost(post);
+  async createPost(@Body() post: CreatePostDto, @Req() req: RequestWithUser) {
+    return this.postsService.createPost(post, req.user);
   }
 
   @Patch(':id')
