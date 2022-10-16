@@ -5,12 +5,14 @@ import {
   Body,
   Param,
   Delete,
-  Put,
   UseGuards,
+  Patch,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+
+import { FindOneParams } from 'src/utils/find-one-params';
 
 import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
 
@@ -24,7 +26,7 @@ export class PostsController {
   }
 
   @Get(':id')
-  getPostById(@Param('id') id: string) {
+  getPostById(@Param('id') { id }: FindOneParams) {
     return this.postsService.getPostById(+id);
   }
 
@@ -34,9 +36,9 @@ export class PostsController {
     return this.postsService.createPost(post);
   }
 
-  @Put(':id')
-  async replacePost(@Param('id') id: string, @Body() post: UpdatePostDto) {
-    return this.postsService.replacePost(Number(id), post);
+  @Patch(':id')
+  async updatePost(@Param('id') id: string, @Body() post: UpdatePostDto) {
+    return this.postsService.updatePost(Number(id), post);
   }
 
   @Delete(':id')

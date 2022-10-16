@@ -10,6 +10,8 @@ import { PostsModule } from './posts/posts.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { UsersModule } from './users/users.module';
+import { APP_FILTER } from '@nestjs/core';
+import { ExceptionsLoggerFilter } from './utils/exceptions-logger.filter';
 
 @Module({
   imports: [
@@ -31,6 +33,9 @@ import { UsersModule } from './users/users.module';
     DatabaseModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    { provide: APP_FILTER, useClass: ExceptionsLoggerFilter },
+  ],
 })
 export class AppModule {}
