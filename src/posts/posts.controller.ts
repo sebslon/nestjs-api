@@ -12,7 +12,7 @@ import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
-import { FindOneParams } from 'src/utils/find-one-params';
+import { FindOneParams } from 'src/utils/validators/param/find-one-params';
 
 import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
 

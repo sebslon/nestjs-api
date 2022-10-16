@@ -8,6 +8,7 @@ import {
   UseGuards,
   Res,
   Get,
+  SerializeOptions,
 } from '@nestjs/common';
 
 import RegisterDto from './dto/register.dto';
@@ -20,6 +21,7 @@ import { LocalAuthenticationGuard } from './guards/local-authentication.guard';
 import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
 
 @Controller('authentication')
+@SerializeOptions({ strategy: 'excludeAll' }) // serialization (e.g user.entity) with global interceptor
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
@@ -27,7 +29,6 @@ export class AuthenticationController {
   @Get()
   authenticate(@Req() request: RequestWithUser) {
     const user = request.user;
-    user.password = undefined;
     return user;
   }
 
@@ -42,11 +43,10 @@ export class AuthenticationController {
   async logIn(@Req() request: RequestWithUser, @Res() response: Response) {
     const { user } = request;
 
-    console.log(user);
     const cookie = this.authenticationService.getCookieWithJwtToken(user.id);
 
-    response.setHeader('Set-Cookie', cookie);
-    user.password = undefined;
+    // response.setHeader('Set-Cookie', cookie);
+    request.res.setHeader('Set-Cookie', cookie);
 
     return response.send(user);
   }
