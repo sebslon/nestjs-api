@@ -7,7 +7,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 
 import Post from './post.entity';
 import { PostNotFoundException } from './exceptions/post-not-found.exception';
-import User from 'src/users/user.entity';
+import User from '../users/user.entity';
 
 @Injectable()
 export class PostsService {
