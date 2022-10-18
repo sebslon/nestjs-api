@@ -11,6 +11,8 @@ import { mockedJwtService } from '../../utils/mocks/jwt.service';
 
 import User from '../../users/user.entity';
 
+jest.mock('bcrypt');
+
 describe('AuthenticationService', () => {
   let authenticationService: AuthenticationService;
 
@@ -37,9 +39,7 @@ describe('AuthenticationService', () => {
       ],
     }).compile();
 
-    authenticationService = await module.get<AuthenticationService>(
-      AuthenticationService,
-    );
+    authenticationService = await module.get(AuthenticationService);
   });
 
   it('Should return a string when creating a cookie', () => {
