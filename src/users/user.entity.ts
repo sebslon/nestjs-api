@@ -8,8 +8,10 @@ import {
 } from 'typeorm';
 
 import { Exclude, Expose } from 'class-transformer';
+
 import Address from './address.entity';
 import Post from '../posts/post.entity';
+import PublicFile from 'src/files/public-file.entity';
 
 @Entity()
 class User {
@@ -37,5 +39,9 @@ class User {
 
   @OneToMany(() => Post, (post: Post) => post.author)
   public posts: Post[];
+
+  @OneToOne(() => PublicFile, { eager: true, nullable: true })
+  @JoinColumn()
+  public avatar?: PublicFile;
 }
 export default User;
