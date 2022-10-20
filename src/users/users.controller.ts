@@ -1,15 +1,19 @@
-import { Express } from 'express';
+import { Express, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   Controller,
   Delete,
+  Get,
   Param,
   Post,
   Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+
+import { FindOneParams } from '../utils/validators/param/find-one-params';
 
 import { RequestWithUser } from '../authentication/types/request-with-user';
 
@@ -35,13 +39,35 @@ export class UsersController {
     );
   }
 
-  @Delete('files/:key')
+  @Get('files')
+  @UseGuards(JwtAuthenticationGuard)
+  async getAllPrivateFiles(@Req() request: RequestWithUser) {
+    return this.usersService.getAllPrivateFiles(request.user.id);
+  }
+
+  @Get('files/:id')
+  @UseGuards(JwtAuthenticationGuard)
+  async getPrivateFile(
+    @Req() request: RequestWithUser,
+    @Param() { id }: FindOneParams,
+    @Res() response: Response,
+  ) {
+    const file = await this.usersService.getPrivateFile(
+      request.user.id,
+      Number(id),
+    );
+
+    // Thanks to working directly with streams, we don’t have to download the file into the memory in our server.
+    file.stream.pipe(response);
+  }
+
+  @Delete('files/:id')
   @UseGuards(JwtAuthenticationGuard)
   async deletePrivateFile(
     @Req() request: RequestWithUser,
-    @Param('key') fileKey: string,
+    @Param() { id }: FindOneParams,
   ) {
-    return this.usersService.deletePrivateFile(request.user.id, fileKey);
+    return this.usersService.deletePrivateFile(request.user.id, Number(id));
   }
 
   @Post('avatar')

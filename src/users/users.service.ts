@@ -3,6 +3,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -94,16 +95,47 @@ export class UsersService {
     );
   }
 
-  async deletePrivateFile(userId: number, fileId: string) {
+  async deletePrivateFile(userId: number, fileId: number) {
     const user = await this.usersRepository.findOne({
       where: { id: userId },
       relations: ['files'],
     });
 
-    if (!user.files.some((file) => file.key === fileId)) {
+    if (!user.files.some((file) => file.id === fileId)) {
       throw new UnauthorizedException('This file does not belong to you.');
     }
 
     await this.privateFilesService.deletePrivateFile(fileId);
+  }
+
+  async getPrivateFile(userId: number, fileId: number) {
+    const file = await this.privateFilesService.getPrivateFile(fileId);
+    if (file.info.owner.id === userId) {
+      return file;
+    }
+    throw new UnauthorizedException();
+  }
+
+  async getAllPrivateFiles(userId: number) {
+    const userWithFiles = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['files'],
+    });
+
+    if (userWithFiles) {
+      return Promise.all(
+        userWithFiles.files.map(async (file) => {
+          const url = await this.privateFilesService.generatePresignedUrl(
+            file.key,
+          );
+          return {
+            ...file,
+            url,
+          };
+        }),
+      );
+    }
+
+    throw new NotFoundException('User with this id does not exist');
   }
 }
