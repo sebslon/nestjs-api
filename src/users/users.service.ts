@@ -1,9 +1,10 @@
 import * as bcrypt from 'bcrypt';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import {
   HttpException,
   HttpStatus,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -18,6 +19,7 @@ import User from './user.entity';
 @Injectable()
 export class UsersService {
   constructor(
+    private dataSource: DataSource,
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private readonly filesService: FilesService,
@@ -94,15 +96,29 @@ export class UsersService {
   }
 
   async deleteAvatar(userId: number) {
+    const queryRunner = this.dataSource.createQueryRunner();
+
     const user = await this.getById(userId);
     const fileId = user.avatar?.id;
 
     if (fileId) {
-      await this.usersRepository.update(userId, {
-        ...user,
-        avatar: null,
-      });
-      await this.filesService.deletePublicFile(fileId);
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+
+      try {
+        await queryRunner.manager.update(User, userId, {
+          ...user,
+          avatar: null,
+        });
+        await this.filesService.deletePublicFile(fileId, queryRunner);
+        await queryRunner.commitTransaction();
+      } catch (error) {
+        await queryRunner.rollbackTransaction();
+
+        throw new InternalServerErrorException();
+      } finally {
+        await queryRunner.release();
+      }
     }
   }
 
