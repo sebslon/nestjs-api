@@ -24,15 +24,16 @@
 
 ## Description
 
-Covered topics during building this API:
+Covered topics during building this API (service):
 
 - Controllers, routing and the module structure
 - PostgreSQL setup with docker-compose
-- User authentication with JWT/passport/bcrypt/cookies
+- User authentication with JWT/passport/bcrypt/cookies (authentication)
 - Error handling and data validation, serialization (filters/guards/interceptors/validating requests)
 - Dependency Injection and Modules
 - Unit & Integration testing
-- Amazon S3 - uploading public/private files - fetching with use of streams, generating presigned URLs
+- Amazon S3 - uploading public/private files - fetching with use of streams, generating presigned URLs (files)
+- ElasticSearch integration with Nest.js - consistency management (search)
 
 ## Installation
 
