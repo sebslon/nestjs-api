@@ -15,7 +15,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(app.get(Reflector)),
-    new ExcludeNullInterceptor(),
+    // new ExcludeNullInterceptor(),
   ); // uses class-transformer - serialization (e.g user.entity)
 
   const configService: ConfigService = app.get(ConfigService);

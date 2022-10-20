@@ -3,6 +3,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import {
   Controller,
   Delete,
+  Param,
   Post,
   Req,
   UploadedFile,
@@ -19,6 +20,29 @@ import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Post('files')
+  @UseGuards(JwtAuthenticationGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  async addPrivateFile(
+    @Req() request: RequestWithUser,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.usersService.addPrivateFile(
+      request.user.id,
+      file.buffer,
+      file.originalname,
+    );
+  }
+
+  @Delete('files/:key')
+  @UseGuards(JwtAuthenticationGuard)
+  async deletePrivateFile(
+    @Req() request: RequestWithUser,
+    @Param('key') fileKey: string,
+  ) {
+    return this.usersService.deletePrivateFile(request.user.id, fileKey);
+  }
 
   @Post('avatar')
   @UseGuards(JwtAuthenticationGuard)

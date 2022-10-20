@@ -12,4 +12,5 @@ export const mockedUser: User = {
     city: 'city',
     country: 'country',
   },
+  files: [],
 };

@@ -1,8 +1,14 @@
 import { Repository } from 'typeorm';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { FilesService } from 'src/files/files.service';
+import { PrivateFilesService } from '../files-private/private-files.service';
 
 import CreateUserDto from './dto/create-user.dto';
 import User from './user.entity';
@@ -13,6 +19,7 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private readonly filesService: FilesService,
+    private readonly privateFilesService: PrivateFilesService,
   ) {}
 
   async getById(id: number) {
@@ -77,5 +84,26 @@ export class UsersService {
       });
       await this.filesService.deletePublicFile(fileId);
     }
+  }
+
+  async addPrivateFile(userId: number, imageBuffer: Buffer, filename: string) {
+    return this.privateFilesService.uploadPrivateFile(
+      imageBuffer,
+      userId,
+      filename,
+    );
+  }
+
+  async deletePrivateFile(userId: number, fileId: string) {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+      relations: ['files'],
+    });
+
+    if (!user.files.some((file) => file.key === fileId)) {
+      throw new UnauthorizedException('This file does not belong to you.');
+    }
+
+    await this.privateFilesService.deletePrivateFile(fileId);
   }
 }
