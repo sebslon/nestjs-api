@@ -34,6 +34,7 @@ Covered topics during building this API (service):
 - Unit & Integration testing
 - Amazon S3 - uploading public/private files - fetching with use of streams, generating presigned URLs (files)
 - ElasticSearch integration with Nest.js - consistency management (search)
+- Refresh Tokens with JWT
 
 ## Installation
 

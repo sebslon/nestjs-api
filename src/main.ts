@@ -6,8 +6,6 @@ import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
 
-import { ExcludeNullInterceptor } from './utils/interceptors/exclude-null.interceptor';
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
