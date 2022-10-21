@@ -14,6 +14,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { ExceptionsLoggerFilter } from './utils/filters/exceptions-logger.filter';
 import { CategoriesModule } from './categories/categories.module';
 import { UsersModule } from './users/users.module';
+import { SubscribersModule } from './subscribers/subscribers.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     AuthenticationModule,
     CategoriesModule,
+    SubscribersModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
