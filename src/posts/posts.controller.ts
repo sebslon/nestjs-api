@@ -14,20 +14,26 @@ import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 
-import { FindOneParams } from 'src/utils/validators/param/find-one-params';
+import { FindOneParams } from '../utils/validators/param/find-one-params';
+import { PaginationParams } from '../utils/validators/param/pagination-params';
 
 import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
-import { RequestWithUser } from 'src/authentication/types/request-with-user';
+import { RequestWithUser } from '../authentication/types/request-with-user';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  getPosts(@Query('search') search: string) {
-    if (search) return this.postsService.searchForPosts(search);
+  getPosts(
+    @Query('search') search: string,
+    @Query() { offset, limit, startId }: PaginationParams,
+  ) {
+    if (search) {
+      return this.postsService.searchForPosts(search, offset, limit, startId);
+    }
 
-    return this.postsService.getAllPosts();
+    return this.postsService.getAllPosts(offset, limit, startId);
   }
 
   @Get(':id')

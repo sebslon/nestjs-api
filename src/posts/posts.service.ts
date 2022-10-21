@@ -1,4 +1,4 @@
-import { In, Repository } from 'typeorm';
+import { FindManyOptions, In, MoreThan, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 
@@ -20,8 +20,23 @@ export class PostsService {
     private postsSearchService: PostsSearchService,
   ) {}
 
-  getAllPosts() {
-    return this.postsRepository.find({ relations: ['author'] });
+  async getAllPosts(offset?: number, limit?: number, startId?: number) {
+    const where: FindManyOptions<Post>['where'] = {};
+    let separateCount = 0;
+
+    if (startId) {
+      where.id = MoreThan(startId);
+      separateCount = await this.postsRepository.count(); // otherwise it will count only the filtered posts
+    }
+
+    const [items, count] = await this.postsRepository.findAndCount({
+      relations: ['author'],
+      order: { id: 'ASC' },
+      skip: offset,
+      take: limit,
+    });
+
+    return { items, count: startId ? separateCount : count };
   }
 
   async getPostById(id: number) {
@@ -71,12 +86,31 @@ export class PostsService {
     this.postsSearchService.remove(id);
   }
 
-  async searchForPosts(text: string) {
-    const results = await this.postsSearchService.search(text);
+  async searchForPosts(
+    text: string,
+    offset?: number,
+    limit?: number,
+    startId?: number,
+  ) {
+    const { results, count } = await this.postsSearchService.search(
+      text,
+      offset,
+      limit,
+      startId,
+    );
     const ids = results.map((result) => result.id);
 
     if (!ids.length) return [];
 
-    return this.postsRepository.find({ where: { id: In(ids) } });
+    const posts = this.postsRepository.find({ where: { id: In(ids) } });
+
+    return posts;
+  }
+
+  async getPostsWithParagraph(paragraph: string) {
+    return this.postsRepository.query(
+      'SELECT * FROM post WHERE $1 = ANY(paragraphs)',
+      [paragraph],
+    );
   }
 }

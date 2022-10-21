@@ -5,11 +5,6 @@ export interface PostSearchBody {
   authorId: number;
 }
 
-// export interface PostSearchResult {
-//   hits: {
-//     total: number;
-//     hits: {
-//       _source: PostSearchBody;
-//     }[];
-//   };
-// }
+export interface PostCountResult {
+  count: number;
+}

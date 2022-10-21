@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import Post from './post.entity';
 import {
+  PostCountResult,
   PostSearchBody,
   // PostSearchResult,
 } from './types/post-search.interface';
@@ -24,21 +25,55 @@ export default class PostsSearchService {
     });
   }
 
-  async search(text: string) {
+  async search(
+    text: string,
+    offset?: number,
+    limit?: number,
+    startId?: number,
+  ) {
+    let separateCount = 0;
+
+    if (startId) {
+      separateCount = await this.count(text, ['title', 'paragraphs']);
+    }
+
     const { hits } = await this.elasticsearchService.search<PostSearchBody>({
       index: this.index,
+      from: offset,
+      size: limit,
       body: {
         query: {
-          // Search both through title & content
-          multi_match: {
-            query: text,
-            fields: ['title', 'content'],
+          bool: {
+            should: {
+              multi_match: {
+                query: text,
+                fields: ['title', 'paragraphs'],
+              },
+            },
+            filter: {
+              range: {
+                id: {
+                  gt: startId,
+                },
+              },
+            },
+          },
+        },
+        sort: {
+          id: {
+            order: 'asc',
           },
         },
       },
     });
 
-    return hits.hits.map((item) => item._source);
+    const results = hits.hits.map((item) => item._source);
+    const count = hits.total;
+
+    return {
+      count: startId ? separateCount : count,
+      results,
+    };
   }
 
   async remove(postId: number) {
@@ -78,5 +113,20 @@ export default class PostsSearchService {
         script: { source: script },
       },
     });
+  }
+
+  async count(query: string, fields: string[]) {
+    const { count } = await this.elasticsearchService.count({
+      index: this.index,
+      body: {
+        query: {
+          multi_match: {
+            query,
+            fields,
+          },
+        },
+      },
+    });
+    return count;
   }
 }
