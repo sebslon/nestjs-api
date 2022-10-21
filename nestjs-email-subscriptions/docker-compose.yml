@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  postgres-subscriptions:
+    image: postgres:latest
+    container_name: postgres-subscriptions
+    ports:
+      - 5433:5432
+    volumes:
+      - ./data/postgres:/data/postgres
+    env_file:
+      - docker.env
+    networks:
+      - postgres-subscriptions
+  
+  pgadmin-subscriptions:
+    links:
+    - postgres-subscriptions:postgres
+    container_name: pgadmin-subscriptions
+    image: dpage/pgadmin4
+    ports:
+    - "8081:80"
+    volumes:
+    - ./data/pgadmin:/root/.pgadmin
+    env_file:
+    - docker.env
+    networks:
+    - postgres-subscriptions
+
+networks:
+  postgres-subscriptions:
+    driver: bridge

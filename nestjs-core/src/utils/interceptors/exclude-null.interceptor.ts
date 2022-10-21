@@ -13,6 +13,6 @@ export class ExcludeNullInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next
       .handle()
-      .pipe(map((value) => recursivelyStripNullValues(value)));
+      .pipe(map((value: unknown) => recursivelyStripNullValues(value)));
   }
 }
