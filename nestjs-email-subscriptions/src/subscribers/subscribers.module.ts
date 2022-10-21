@@ -4,12 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SubscribersService } from './subscribers.service';
 
 import Subscriber from './subscriber.entity';
-import { SubscribersController } from './subscribers.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Subscriber])],
-  providers: [SubscribersService],
+  // providers: [SubscribersService],
   exports: [],
-  controllers: [SubscribersController],
+  // controllers: [SubscribersController], // not in gRPC microservice
+  controllers: [SubscribersService], // in gRPC microservice
 })
 export class SubscribersModule {}

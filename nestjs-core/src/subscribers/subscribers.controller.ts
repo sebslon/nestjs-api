@@ -1,4 +1,3 @@
-import { ClientProxy } from '@nestjs/microservices';
 import {
   Body,
   Controller,
@@ -8,45 +7,33 @@ import {
   UseInterceptors,
   ClassSerializerInterceptor,
   Inject,
+  OnModuleInit,
 } from '@nestjs/common';
-
 import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
-
 import { CreateSubscriberDto } from './dto/create-subscriber.dto';
-
-// the user calls the  /subscribers endpoint in our monolithic app,
-// our application calls the microservice to get the necessary data,
-// the microservice retrieves the data from its own database,
-// our main application responds with the data.
+import { ClientGrpc } from '@nestjs/microservices';
+import SubscribersService from './subscribers.service.interface';
 
 @Controller('subscribers')
 @UseInterceptors(ClassSerializerInterceptor)
-export default class SubscribersController {
-  constructor(
-    @Inject('SUBSCRIBERS_SERVICE') private subscribersService: ClientProxy,
-  ) {}
+export default class SubscribersController implements OnModuleInit {
+  private subscribersService: SubscribersService;
 
-  // Message pattern (request/response)
-  @Get()
-  @UseGuards(JwtAuthenticationGuard)
-  async getSubscribers() {
-    return this.subscribersService.send(
-      {
-        cmd: 'get-all-subscribers',
-      },
-      '',
-    );
+  constructor(@Inject('SUBSCRIBERS_PACKAGE') private client: ClientGrpc) {}
+
+  onModuleInit() {
+    this.subscribersService =
+      this.client.getService<SubscribersService>('SubscribersService');
   }
 
-  // Event pattern (no need for response)
+  @Get()
+  async getSubscribers() {
+    return this.subscribersService.getAllSubscribers({});
+  }
+
   @Post()
   @UseGuards(JwtAuthenticationGuard)
-  async createSubscriber(@Body() subscriber: CreateSubscriberDto) {
-    return this.subscribersService.emit(
-      {
-        cmd: 'add-subscriber',
-      },
-      subscriber,
-    );
+  async addSubscriber(@Body() subscriber: CreateSubscriberDto) {
+    return this.subscribersService.addSubscriber(subscriber);
   }
 }

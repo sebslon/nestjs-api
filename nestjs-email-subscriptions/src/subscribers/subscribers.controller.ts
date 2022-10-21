@@ -10,6 +10,8 @@ import { CreateSubscriberDto } from './dto/create-subscriber.dto';
 
 import { SubscribersService } from './subscribers.service';
 
+// In case of use gRPC - this controller is not used and exported from the module
+
 @Controller('subscribers')
 export class SubscribersController {
   constructor(private readonly subscribersService: SubscribersService) {}

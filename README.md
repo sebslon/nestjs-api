@@ -21,4 +21,4 @@ Covered topics during building this APIs (service):
 - ElasticSearch integration with Nest.js - consistency management (search)
 - Refresh Tokens with JWT (authentication/users)
 - Keyset/Offset pagination (posts)
-- Microservices (RabbitMQ)
+- Microservices (RabbitMQ, gRPC)
