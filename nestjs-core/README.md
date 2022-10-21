@@ -22,21 +22,6 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
-
-Covered topics during building this API (service):
-
-- Controllers, routing and the module structure
-- PostgreSQL setup with docker-compose
-- User authentication with JWT/passport/bcrypt/cookies (authentication)
-- Error handling and data validation, serialization (filters/guards/interceptors/validating requests)
-- Dependency Injection and Modules
-- Unit & Integration testing
-- Amazon S3 - uploading public/private files - fetching with use of streams, generating presigned URLs (files)
-- ElasticSearch integration with Nest.js - consistency management (search)
-- Refresh Tokens with JWT (authentication/users)
-- Keyset/Offset pagination (posts)
-
 ## Installation
 
 ```bash
