@@ -16,6 +16,8 @@ import { CategoriesModule } from './categories/categories.module';
 import { UsersModule } from './users/users.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
 import { CommentsModule } from './comments/comments.module';
+import { ProductsModule } from './products/products.module';
+import { ProductCategoriesModule } from './product-categories/product-categories.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { CommentsModule } from './comments/comments.module';
     CategoriesModule,
     SubscribersModule,
     CommentsModule,
+    ProductsModule,
+    ProductCategoriesModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),

@@ -23,3 +23,4 @@ Covered topics during building this APIs (service):
 - Keyset/Offset pagination (posts) TODo:
 - Microservices (RabbitMQ, gRPC)
 - CQRS (comments service) - TODO: events/sagas
+- Creating/Reading JSON data from PostgreSQL with TypeORM (products, product-categories)
