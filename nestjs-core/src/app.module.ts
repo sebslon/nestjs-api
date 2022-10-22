@@ -7,14 +7,15 @@ import { AppController } from './app.controller';
 
 import { AppService } from './app.service';
 
-import { PostsModule } from './posts/posts.module';
+import { ExceptionsLoggerFilter } from './utils/filters/exceptions-logger.filter';
+
 import { DatabaseModule } from './database/database.module';
 import { AuthenticationModule } from './authentication/authentication.module';
-
-import { ExceptionsLoggerFilter } from './utils/filters/exceptions-logger.filter';
+import { PostsModule } from './posts/posts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { UsersModule } from './users/users.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { SubscribersModule } from './subscribers/subscribers.module';
     AuthenticationModule,
     CategoriesModule,
     SubscribersModule,
+    CommentsModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),

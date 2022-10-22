@@ -11,6 +11,7 @@ import { Exclude, Expose } from 'class-transformer';
 
 import Address from './address.entity';
 import Post from '../posts/post.entity';
+import Comment from '../comments/comment.entity';
 import PublicFile from '../files/public-file.entity';
 import PrivateFile from '../files-private/private-file.entity';
 
@@ -48,6 +49,9 @@ class User {
   @OneToOne(() => PublicFile, { eager: true, nullable: true })
   @JoinColumn()
   public avatar?: PublicFile;
+
+  @OneToMany(() => Comment, (comment: Comment) => comment.author)
+  public comments: Comment[];
 
   @OneToMany(() => PrivateFile, (file: PrivateFile) => file.owner)
   public files: PrivateFile[];

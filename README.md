@@ -20,5 +20,6 @@ Covered topics during building this APIs (service):
 - Amazon S3 - uploading public/private files - fetching with use of streams, generating presigned URLs (files)
 - ElasticSearch integration with Nest.js - consistency management (search)
 - Refresh Tokens with JWT (authentication/users)
-- Keyset/Offset pagination (posts)
+- Keyset/Offset pagination (posts) TODo:
 - Microservices (RabbitMQ, gRPC)
+- CQRS (comments service) - TODO: events/sagas

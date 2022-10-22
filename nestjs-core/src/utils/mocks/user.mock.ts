@@ -13,4 +13,5 @@ export const mockedUser: User = {
     country: 'country',
   },
   files: [],
+  comments: [],
 };
