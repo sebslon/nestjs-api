@@ -28,3 +28,4 @@ Covered topics during building this APIs (service):
 - Cache with Redis / Running app in cluster (run-in-cluster.ts / posts)
 - Running CRON actions (emails/email-scheduling)
 - WebSockets (chat)
+- GraphQL (posts)

@@ -7,10 +7,12 @@ import { PostsController } from './posts.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { SearchModule } from '../search/search.module';
+import { PostsResolver } from './posts.resolver';
 
 import PostsSearchService from './post-search.service';
 
 import Post from './post.entity';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -27,8 +29,9 @@ import Post from './post.entity';
     }),
     TypeOrmModule.forFeature([Post]),
     SearchModule,
+    UsersModule,
   ],
   controllers: [PostsController],
-  providers: [PostsService, PostsSearchService],
+  providers: [PostsService, PostsSearchService, PostsResolver],
 })
 export class PostsModule {}
