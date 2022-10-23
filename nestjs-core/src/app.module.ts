@@ -20,6 +20,7 @@ import { ProductsModule } from './products/products.module';
 import { ProductCategoriesModule } from './product-categories/product-categories.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EmailSchedulingModule } from './email-scheduling/email-scheduling.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { EmailSchedulingModule } from './email-scheduling/email-scheduling.modul
     ProductsModule,
     ProductCategoriesModule,
     EmailSchedulingModule,
+    ChatModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),

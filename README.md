@@ -27,3 +27,4 @@ Covered topics during building this APIs (service):
 - In-memory caching with cache-manager (disadvantages: e.g. not shared between instances, cache loss after restart) (posts)
 - Cache with Redis / Running app in cluster (run-in-cluster.ts / posts)
 - Running CRON actions (emails/email-scheduling)
+- WebSockets (chat)
