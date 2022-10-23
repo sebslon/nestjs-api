@@ -29,3 +29,4 @@ Covered topics during building this APIs (service):
 - Running CRON actions (emails/email-scheduling)
 - WebSockets (chat)
 - GraphQL (posts)
+- Solving N+1 problem (batching - dataloader, other option - based on query, join columns or not)

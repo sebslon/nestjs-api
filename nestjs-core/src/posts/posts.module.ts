@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SearchModule } from '../search/search.module';
 import { PostsResolver } from './posts.resolver';
 
+import PostsLoaders from './loaders/posts.loaders';
 import PostsSearchService from './post-search.service';
 
 import Post from './post.entity';
@@ -32,6 +33,6 @@ import { UsersModule } from 'src/users/users.module';
     UsersModule,
   ],
   controllers: [PostsController],
-  providers: [PostsService, PostsSearchService, PostsResolver],
+  providers: [PostsService, PostsSearchService, PostsResolver, PostsLoaders],
 })
 export class PostsModule {}

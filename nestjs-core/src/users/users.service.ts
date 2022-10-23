@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, In, Repository } from 'typeorm';
 import {
   HttpException,
   HttpStatus,
@@ -37,6 +37,12 @@ export class UsersService {
       'User with this id does not exist',
       HttpStatus.NOT_FOUND,
     );
+  }
+
+  async getManyByIds(ids: number[]) {
+    return this.usersRepository.find({
+      where: { id: In(ids) },
+    });
   }
 
   async getByEmail(email: string) {
