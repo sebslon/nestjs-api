@@ -5,6 +5,7 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
+import { runInCluster } from './utils/run-in-cluster';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,4 +27,6 @@ async function bootstrap() {
 
   await app.listen(3001);
 }
+
+// runInCluster(bootstrap);
 bootstrap();

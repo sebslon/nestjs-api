@@ -10,7 +10,6 @@ import {
   Req,
   Query,
   UseInterceptors,
-  CacheInterceptor,
   CacheKey,
   CacheTTL,
 } from '@nestjs/common';
@@ -23,16 +22,18 @@ import { PaginationParams } from '../utils/validators/param/pagination-params';
 
 import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
 import { RequestWithUser } from '../authentication/types/request-with-user';
+
 import { GET_POSTS_CACHE_KEY } from './constants/posts-cache-key.constant';
+import { HttpCacheInterceptor } from './cache/http-cache.interceptor';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
-  @UseInterceptors(CacheInterceptor) // can be used to cache whole controller/module
-  @CacheKey(GET_POSTS_CACHE_KEY) // custom cache key
-  @CacheTTL(120) // cache for 2 minutes (custom value) (default is 5min)
   @Get()
+  @UseInterceptors(HttpCacheInterceptor) // can be used to cache whole controller/module
+  @CacheKey(GET_POSTS_CACHE_KEY) // custom cache key
+  @CacheTTL(100000) // cache for 2 minutes (custom value) (default is 5min)
   getPosts(
     @Query('search') search: string,
     @Query() { offset, limit, startId }: PaginationParams,

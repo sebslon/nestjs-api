@@ -45,6 +45,8 @@ import { ProductCategoriesModule } from './product-categories/product-categories
         AWS_SECRET_ACCESS_KEY: Joi.string().required(),
         AWS_PUBLIC_BUCKET_NAME: Joi.string().required(),
         AWS_PRIVATE_BUCKET_NAME: Joi.string().required(),
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PORT: Joi.number().required(),
         PORT: Joi.number(),
       }),
     }),
