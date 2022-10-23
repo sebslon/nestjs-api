@@ -18,6 +18,8 @@ import { SubscribersModule } from './subscribers/subscribers.module';
 import { CommentsModule } from './comments/comments.module';
 import { ProductsModule } from './products/products.module';
 import { ProductCategoriesModule } from './product-categories/product-categories.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { EmailSchedulingModule } from './email-scheduling/email-scheduling.module';
 
 @Module({
   imports: [
@@ -29,6 +31,7 @@ import { ProductCategoriesModule } from './product-categories/product-categories
     CommentsModule,
     ProductsModule,
     ProductCategoriesModule,
+    EmailSchedulingModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
@@ -47,10 +50,14 @@ import { ProductCategoriesModule } from './product-categories/product-categories
         AWS_PRIVATE_BUCKET_NAME: Joi.string().required(),
         REDIS_HOST: Joi.string().required(),
         REDIS_PORT: Joi.number().required(),
+        EMAIL_SERVICE: Joi.string().required(),
+        EMAIL_USER: Joi.string().required(),
+        EMAIL_PASSWORD: Joi.string().required(),
         PORT: Joi.number(),
       }),
     }),
     DatabaseModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [
