@@ -24,3 +24,4 @@ Covered topics during building this APIs (service):
 - Microservices (RabbitMQ, gRPC)
 - CQRS (comments service) - TODO: events/sagas
 - Creating/Reading JSON data from PostgreSQL with TypeORM (products, product-categories)
+- In-memory caching with cache-manager (disadvantages: e.g. not shared between instances)

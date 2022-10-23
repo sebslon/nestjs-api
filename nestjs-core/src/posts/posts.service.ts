@@ -1,6 +1,7 @@
+import { Cache } from 'cache-manager';
 import { FindManyOptions, In, MoreThan, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -11,6 +12,7 @@ import Post from './post.entity';
 import User from '../users/user.entity';
 
 import PostsSearchService from './post-search.service';
+import { GET_POSTS_CACHE_KEY } from './constants/posts-cache-key.constant';
 
 @Injectable()
 export class PostsService {
@@ -18,6 +20,7 @@ export class PostsService {
     @InjectRepository(Post)
     private postsRepository: Repository<Post>,
     private postsSearchService: PostsSearchService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache, // Caching manually
   ) {}
 
   async getAllPosts(offset?: number, limit?: number, startId?: number) {
@@ -60,6 +63,7 @@ export class PostsService {
 
     if (updatedPost) {
       await this.postsSearchService.update(updatedPost);
+      await this.clearCache();
       return updatedPost;
     }
 
@@ -75,6 +79,8 @@ export class PostsService {
     await this.postsRepository.save(newPost);
     this.postsSearchService.indexPost(newPost);
 
+    await this.clearCache();
+
     return newPost;
   }
 
@@ -83,7 +89,8 @@ export class PostsService {
 
     if (!deleteResponse.affected) throw new PostNotFoundException(id);
 
-    this.postsSearchService.remove(id);
+    await this.postsSearchService.remove(id);
+    await this.clearCache();
   }
 
   async searchForPosts(
@@ -112,5 +119,14 @@ export class PostsService {
       'SELECT * FROM post WHERE $1 = ANY(paragraphs)',
       [paragraph],
     );
+  }
+
+  // Invalidating cache after updating, deleting or creating a post
+  private async clearCache() {
+    const keys: string[] = await this.cacheManager.store.keys();
+
+    keys.forEach((key) => {
+      if (key.startsWith(GET_POSTS_CACHE_KEY)) this.cacheManager.del(key);
+    });
   }
 }
