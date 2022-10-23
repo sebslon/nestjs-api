@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import Post from './post.entity';
 import {
-  PostCountResult,
   PostSearchBody,
+  PostSearchResult,
   // PostSearchResult,
 } from './types/post-search.interface';
 
@@ -37,7 +37,7 @@ export default class PostsSearchService {
       separateCount = await this.count(text, ['title', 'paragraphs']);
     }
 
-    const { hits } = await this.elasticsearchService.search<PostSearchBody>({
+    const { body } = await this.elasticsearchService.search<PostSearchResult>({
       index: this.index,
       from: offset,
       size: limit,
@@ -67,8 +67,8 @@ export default class PostsSearchService {
       },
     });
 
-    const results = hits.hits.map((item) => item._source);
-    const count = hits.total;
+    const results = body.hits.hits.map((item) => item._source);
+    const count = body.hits.total;
 
     return {
       count: startId ? separateCount : count,
@@ -116,7 +116,7 @@ export default class PostsSearchService {
   }
 
   async count(query: string, fields: string[]) {
-    const { count } = await this.elasticsearchService.count({
+    const { body } = await this.elasticsearchService.count<PostSearchResult>({
       index: this.index,
       body: {
         query: {
@@ -127,6 +127,7 @@ export default class PostsSearchService {
         },
       },
     });
-    return count;
+
+    return body.hits.total.value;
   }
 }

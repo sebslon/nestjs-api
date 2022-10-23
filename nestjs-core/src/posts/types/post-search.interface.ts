@@ -8,3 +8,14 @@ export interface PostSearchBody {
 export interface PostCountResult {
   count: number;
 }
+
+export interface PostSearchResult {
+  hits: {
+    total: {
+      value: number;
+    };
+    hits: Array<{
+      _source: PostSearchBody;
+    }>;
+  };
+}
