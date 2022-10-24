@@ -4,12 +4,16 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 
 import { UsersModule } from '../users/users.module';
+
 import { AuthenticationService } from './authentication.service';
-import { AuthenticationController } from './authentication.controller';
+import { TwoFactorAuthenticationService } from '../two-factor/two-factor-authentication.service';
 
 import { LocalStrategy } from './local.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { JwtRefreshTokenStrategy } from './jwt-refresh.strategy';
+
+import { AuthenticationController } from './authentication.controller';
+import { TwoFactorAuthenticationController } from '../two-factor/two-factor-authentication.controller';
 
 @Module({
   imports: [
@@ -32,8 +36,9 @@ import { JwtRefreshTokenStrategy } from './jwt-refresh.strategy';
     LocalStrategy,
     JwtStrategy,
     JwtRefreshTokenStrategy,
+    TwoFactorAuthenticationService,
   ],
-  controllers: [AuthenticationController],
+  controllers: [AuthenticationController, TwoFactorAuthenticationController],
   exports: [AuthenticationService],
 })
 export class AuthenticationModule {}

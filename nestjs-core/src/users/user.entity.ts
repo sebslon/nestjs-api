@@ -55,5 +55,11 @@ class User {
 
   @OneToMany(() => PrivateFile, (file: PrivateFile) => file.owner)
   public files: PrivateFile[];
+
+  @Column({ default: false })
+  public isTwoFactorAuthenticationEnabled: boolean;
+
+  @Column({ nullable: true })
+  public twoFactorAuthenticationSecret?: string;
 }
 export default User;
