@@ -14,6 +14,7 @@ import { JwtRefreshTokenStrategy } from './jwt-refresh.strategy';
 
 import { AuthenticationController } from './authentication.controller';
 import { TwoFactorAuthenticationController } from '../two-factor/two-factor-authentication.controller';
+import { JwtTwoFactorStrategy } from './jwt-two-factor.strategy';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { TwoFactorAuthenticationController } from '../two-factor/two-factor-auth
     LocalStrategy,
     JwtStrategy,
     JwtRefreshTokenStrategy,
+    JwtTwoFactorStrategy,
     TwoFactorAuthenticationService,
   ],
   controllers: [AuthenticationController, TwoFactorAuthenticationController],

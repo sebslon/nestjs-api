@@ -24,8 +24,8 @@ import Post from './post.entity';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         store: redisStore,
-        host: configService.get('REDIS_HOST'),
-        port: configService.get('REDIS_PORT'),
+        host: 'redis',
+        port: 6379,
         ttl: 300,
       }),
     }),

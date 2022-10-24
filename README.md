@@ -31,3 +31,14 @@ Covered topics during building this APIs (service):
 - GraphQL (posts)
 - Solving N+1 problem (batching - dataloader, other option - based on query, join columns or not)
 - Real time updates with GraphQL Subscriptions (posts-subscription)
+- Two Factor Authentication (two-factor)
+  - Allow user to generate QR Code,
+  - Allow user to activate 2FA by sending the code to /2fa/turn-on endpoint,
+  - Login flow:
+  ```md
+  - user logs in using the email and the password, and we respond with a JWT token,
+  - if the 2FA is turned off, we give full access to the user,
+  - if the 2FA is turned on, we provide the access just to the /2fa/authenticate endpoint,
+    - the user looks up the Authenticator application code and sends it to the /2fa/authenticate endpoint; we respond with a new JWT token with full access.
+    - when jwt expires - user has to authenticate himself again
+  ```

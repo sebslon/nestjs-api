@@ -63,6 +63,8 @@ export class AuthenticationController {
       refreshTokenCookie.cookie,
     ]);
 
+    if (user.isTwoFactorAuthenticationEnabled) return;
+
     return user;
   }
 

@@ -20,7 +20,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { FindOneParams } from '../utils/validators/param/find-one-params';
 import { PaginationParams } from '../utils/validators/param/pagination-params';
 
-import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
+import JwtTwoFactorGuard from '../authentication/guards/jwt-two-factor.guard';
 import { RequestWithUser } from '../authentication/types/request-with-user';
 
 import { GET_POSTS_CACHE_KEY } from './constants/posts-cache-key.constant';
@@ -51,7 +51,7 @@ export class PostsController {
   }
 
   @Post()
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtTwoFactorGuard)
   async createPost(@Body() post: CreatePostDto, @Req() req: RequestWithUser) {
     return this.postsService.createPost(post, req.user);
   }
