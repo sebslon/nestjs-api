@@ -25,6 +25,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { EmailSchedulingModule } from './email-scheduling/email-scheduling.module';
 import { ChatModule } from './chat/chat.module';
 import { PubSubModule } from './pub-sub/pub-sub.module';
+import { Timestamp as TimestampScalar } from './utils/scalars/timestamp.scalar';
 
 @Module({
   imports: [
@@ -74,6 +75,9 @@ import { PubSubModule } from './pub-sub/pub-sub.module';
         // subscriptions: {
         //   'graphql-ws': true,
         // },
+        buildSchemaOptions: {
+          dateScalarMode: 'timestamp',
+        },
       }),
     }),
     DatabaseModule,
@@ -84,6 +88,7 @@ import { PubSubModule } from './pub-sub/pub-sub.module';
   providers: [
     AppService,
     { provide: APP_FILTER, useClass: ExceptionsLoggerFilter },
+    TimestampScalar,
   ],
 })
 export class AppModule {}

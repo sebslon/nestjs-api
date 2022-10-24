@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   Index,
   JoinTable,
@@ -45,6 +46,15 @@ class Post {
 
   @Column('text', { array: true })
   public paragraphs: string[];
+
+  @CreateDateColumn({ type: 'timestamp' })
+  createdAt: Date;
+
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+  })
+  scheduledDate?: Date;
 }
 
 export default Post;
