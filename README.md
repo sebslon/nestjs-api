@@ -23,10 +23,11 @@ Covered topics during building this APIs (service):
 - Keyset/Offset pagination (posts) TODo:
 - Microservices (RabbitMQ, gRPC)
 - CQRS (comments service) - TODO: events/sagas
-- Creating/Reading JSON data from PostgreSQL with TypeORM (products, product-categories)
+- Creating/Reading JSON data froms PostgreSQL with TypeORM (products, product-categories)
 - In-memory caching with cache-manager (disadvantages: e.g. not shared between instances, cache loss after restart) (posts)
 - Cache with Redis / Running app in cluster (run-in-cluster.ts / posts)
 - Running CRON actions (emails/email-scheduling)
 - WebSockets (chat)
 - GraphQL (posts)
 - Solving N+1 problem (batching - dataloader, other option - based on query, join columns or not)
+- Real time updates with GraphQL Subscriptions (posts-subscription)

@@ -6,14 +6,15 @@ import { PostsService } from './posts.service';
 import { PostsController } from './posts.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { UsersModule } from '../users/users.module';
 import { SearchModule } from '../search/search.module';
 import { PostsResolver } from './posts.resolver';
+import { PostsSubscriptionResolver } from './posts-subscription.resolver';
 
 import PostsLoaders from './loaders/posts.loaders';
 import PostsSearchService from './post-search.service';
 
 import Post from './post.entity';
-import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -33,6 +34,12 @@ import { UsersModule } from 'src/users/users.module';
     UsersModule,
   ],
   controllers: [PostsController],
-  providers: [PostsService, PostsSearchService, PostsResolver, PostsLoaders],
+  providers: [
+    PostsService,
+    PostsSearchService,
+    PostsResolver,
+    PostsLoaders,
+    PostsSubscriptionResolver,
+  ],
 })
 export class PostsModule {}

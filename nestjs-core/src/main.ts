@@ -2,10 +2,10 @@ import * as cookieParser from 'cookie-parser';
 import { config } from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory, Reflector } from '@nestjs/core';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
-import { runInCluster } from './utils/run-in-cluster';
+import { CustomClassSerializerInterceptor } from './utils/interceptors/custom-class-serializer.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,7 +13,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(
-    new ClassSerializerInterceptor(app.get(Reflector)),
+    new CustomClassSerializerInterceptor(app.get(Reflector)),
     // new ExcludeNullInterceptor(),
   ); // uses class-transformer - serialization (e.g user.entity)
 

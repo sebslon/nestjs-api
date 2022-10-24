@@ -1,4 +1,5 @@
-import { UseGuards } from '@nestjs/common';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
+import { Inject, UseGuards } from '@nestjs/common';
 import {
   Args,
   Context,
@@ -22,13 +23,15 @@ import { PostsService } from './posts.service';
 import { CreatePostInput } from './inputs/post.input';
 
 import { Post } from './models/post.model';
-import { GraphQLResolveInfo } from 'graphql';
 
+import { PUB_SUB } from '../pub-sub/pub-sub.module';
+import { POST_ADDED_EVENT } from './posts-subscription.resolver';
 @Resolver(() => Post)
 export class PostsResolver {
   constructor(
     private postsService: PostsService,
     private postsLoaders: PostsLoaders,
+    @Inject(PUB_SUB) private pubSub: RedisPubSub,
   ) {}
 
   @Query(() => [Post])
@@ -43,7 +46,12 @@ export class PostsResolver {
     @Args('input') createPostInput: CreatePostInput,
     @Context() context: { req: RequestWithUser },
   ) {
-    return this.postsService.createPost(createPostInput, context.req.user);
+    const post = this.postsService.createPost(
+      createPostInput,
+      context.req.user,
+    );
+    this.pubSub.publish(POST_ADDED_EVENT, { postAdded: post });
+    return post;
   }
 
   @ResolveField('author', () => User)
