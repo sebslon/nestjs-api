@@ -49,3 +49,4 @@ Covered topics during building this APIs (service):
     - when jwt expires - user has to authenticate himself again
   ```
 - Managing CPU intensive tasks with queues (bull & redis) (optimize)
+- Using server-side sessions instead of JSON Web Tokens (nestjs-sessions repo)
