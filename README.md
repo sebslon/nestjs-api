@@ -9,6 +9,12 @@
 
 ## Repository description
 
+Folders:
+
+- nestjs-core - main application
+- nestjs-email-subscriptions - microservice connected to the nestjs-core
+- nestjs-sessions - simple app with authentication implemented with sessions
+
 Covered topics during building this APIs (service):
 
 - Controllers, routing and the module structure
@@ -43,3 +49,4 @@ Covered topics during building this APIs (service):
     - when jwt expires - user has to authenticate himself again
   ```
 - Managing CPU intensive tasks with queues (bull & redis) (optimize)
+- Using server-side sessions instead of JSON Web Tokens (nestjs-sessions repo) / alternative to JWT (sessions stored in redis)
