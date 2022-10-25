@@ -5,12 +5,14 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
+import { BullModule } from '@nestjs/bull';
 
 import { AppController } from './app.controller';
 
 import { AppService } from './app.service';
 
 import { ExceptionsLoggerFilter } from './utils/filters/exceptions-logger.filter';
+import { Timestamp as TimestampScalar } from './utils/scalars/timestamp.scalar';
 
 import { DatabaseModule } from './database/database.module';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -25,7 +27,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { EmailSchedulingModule } from './email-scheduling/email-scheduling.module';
 import { ChatModule } from './chat/chat.module';
 import { PubSubModule } from './pub-sub/pub-sub.module';
-import { Timestamp as TimestampScalar } from './utils/scalars/timestamp.scalar';
+import { OptimizeModule } from './optimize/optimize.module';
 
 @Module({
   imports: [
@@ -39,6 +41,18 @@ import { Timestamp as TimestampScalar } from './utils/scalars/timestamp.scalar';
     ProductCategoriesModule,
     EmailSchedulingModule,
     ChatModule,
+    OptimizeModule,
+    BullModule.forRootAsync({
+      // https://github.com/OptimalBits/bull/blob/master/REFERENCE.md#queue
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        redis: {
+          host: configService.get('REDIS_HOST'),
+          port: configService.get('REDIS_PORT'),
+        },
+      }),
+      inject: [ConfigService],
+    }),
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         JWT_ACCESS_TOKEN_SECRET: Joi.string().required(),
