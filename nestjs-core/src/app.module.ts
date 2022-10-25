@@ -28,6 +28,7 @@ import { EmailSchedulingModule } from './email-scheduling/email-scheduling.modul
 import { ChatModule } from './chat/chat.module';
 import { PubSubModule } from './pub-sub/pub-sub.module';
 import { OptimizeModule } from './optimize/optimize.module';
+import { ChargeModule } from './charge/charge.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { OptimizeModule } from './optimize/optimize.module';
     EmailSchedulingModule,
     ChatModule,
     OptimizeModule,
+    ChargeModule,
     BullModule.forRootAsync({
       // https://github.com/OptimalBits/bull/blob/master/REFERENCE.md#queue
       imports: [ConfigModule],
@@ -75,6 +77,9 @@ import { OptimizeModule } from './optimize/optimize.module';
         EMAIL_USER: Joi.string().required(),
         EMAIL_PASSWORD: Joi.string().required(),
         GRAPHQL_PLAYGROUND: Joi.number(),
+        STRIPE_SECRET_KEY: Joi.string(),
+        STRIPE_CURRENCY: Joi.string(),
+        FRONTEND_URL: Joi.string(),
         PORT: Joi.number(),
       }),
     }),

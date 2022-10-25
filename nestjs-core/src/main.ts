@@ -19,6 +19,11 @@ async function bootstrap() {
 
   const configService: ConfigService = app.get(ConfigService);
 
+  app.enableCors({
+    origin: configService.get('FRONTEND_URL'),
+    credentials: true,
+  });
+
   config.update({
     accessKeyId: configService.get('AWS_ACCESS_KEY_ID'),
     secretAccessKey: configService.get('AWS_SECRET_ACCESS_KEY'),

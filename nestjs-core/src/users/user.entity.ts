@@ -61,5 +61,8 @@ class User {
 
   @Column({ nullable: true })
   public twoFactorAuthenticationSecret?: string;
+
+  @Column()
+  public stripeCustomerId: string;
 }
 export default User;

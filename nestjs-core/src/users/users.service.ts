@@ -15,6 +15,7 @@ import { PrivateFilesService } from '../files-private/private-files.service';
 
 import CreateUserDto from './dto/create-user.dto';
 import User from './user.entity';
+import StripeService from 'src/stripe/stripe.service';
 
 @Injectable()
 export class UsersService {
@@ -22,6 +23,7 @@ export class UsersService {
     private dataSource: DataSource,
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private stripeService: StripeService,
     private readonly filesService: FilesService,
     private readonly privateFilesService: PrivateFilesService,
   ) {}
@@ -57,7 +59,16 @@ export class UsersService {
   }
 
   async create(userData: CreateUserDto) {
-    const newUser = await this.usersRepository.create(userData);
+    const stripeCusomter = await this.stripeService.createCustomer(
+      userData.name,
+      userData.email,
+    );
+
+    const newUser = await this.usersRepository.create({
+      ...userData,
+      stripeCustomerId: stripeCusomter.id,
+    });
+
     await this.usersRepository.save(newUser);
     return newUser;
   }
