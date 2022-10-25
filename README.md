@@ -50,3 +50,17 @@ Covered topics during building this APIs (service):
   ```
 - Managing CPU intensive tasks with queues (bull & redis) (optimize)
 - Using server-side sessions instead of JSON Web Tokens (nestjs-sessions repo) / alternative to JWT (sessions stored in redis)
+- Stripe payments (stripe, charge, credit-cards) with basic flow:
+
+  ```
+    1. User creates an account through our NestJS API. We create a Stripe customer for the user and save the id for later.
+    2. User provides the details of the credit card through the React application. We send it straight to the Stripe API. Stripe API responds with a payment method id.
+    3. Frontend app sends it to our NestJS API. Our NestJS API gets the request and charges the user using the Stripe API.
+
+    Subscriptions:
+    0. Stripe dashboard (create a product)
+    1. Choose default payment method (card /default)
+    2. Create a subscription
+  ```
+
+- Stripe - possibility to save and reuse cards / recurring payments via subscriptions (subscriptions)

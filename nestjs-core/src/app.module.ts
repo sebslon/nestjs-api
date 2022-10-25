@@ -29,6 +29,7 @@ import { ChatModule } from './chat/chat.module';
 import { PubSubModule } from './pub-sub/pub-sub.module';
 import { OptimizeModule } from './optimize/optimize.module';
 import { ChargeModule } from './charge/charge.module';
+import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { ChargeModule } from './charge/charge.module';
     ChatModule,
     OptimizeModule,
     ChargeModule,
+    SubscriptionsModule,
     BullModule.forRootAsync({
       // https://github.com/OptimalBits/bull/blob/master/REFERENCE.md#queue
       imports: [ConfigModule],
@@ -79,6 +81,8 @@ import { ChargeModule } from './charge/charge.module';
         GRAPHQL_PLAYGROUND: Joi.number(),
         STRIPE_SECRET_KEY: Joi.string(),
         STRIPE_CURRENCY: Joi.string(),
+        STRIPE_SUBSCRIPTION_TRIAL_PERIOD: Joi.number(),
+        MONTHLY_SUBSCRIPTION_PRICE_ID: Joi.string(),
         FRONTEND_URL: Joi.string(),
         PORT: Joi.number(),
       }),
