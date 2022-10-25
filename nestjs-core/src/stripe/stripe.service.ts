@@ -25,7 +25,22 @@ export default class StripeService {
       customer: customerId,
       payment_method: paymentMethodId, // sent by frontend
       currency: this.configService.get('STRIPE_CURRENCY'),
+      off_session: true, // occurs without the direct involvement of the customer with the use of previously collected credit card information.
       confirm: true, // should be confirmed immediately? https://stripe.com/docs/api/payment_intents/confirm
+    });
+  }
+
+  async attachCreditCard(paymentMethodId: string, customerId: string) {
+    return this.stripe.setupIntents.create({
+      customer: customerId,
+      payment_method: paymentMethodId,
+    });
+  }
+
+  async listCreditCards(customerId: string) {
+    return this.stripe.paymentMethods.list({
+      customer: customerId,
+      type: 'card',
     });
   }
 }
