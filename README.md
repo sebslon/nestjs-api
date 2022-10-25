@@ -9,6 +9,12 @@
 
 ## Repository description
 
+Folders:
+
+- nestjs-core - main application
+- nestjs-email-subscriptions - microservice connected to the nestjs-core
+- nestjs-sessions - simple app with authentication implemented with sessions
+
 Covered topics during building this APIs (service):
 
 - Controllers, routing and the module structure
