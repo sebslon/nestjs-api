@@ -42,3 +42,4 @@ Covered topics during building this APIs (service):
     - the user looks up the Authenticator application code and sends it to the /2fa/authenticate endpoint; we respond with a new JWT token with full access.
     - when jwt expires - user has to authenticate himself again
   ```
+- Managing CPU intensive tasks with queues (bull & redis) (optimize)

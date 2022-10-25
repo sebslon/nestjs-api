@@ -9,6 +9,13 @@ import { join } from 'path';
   imports: [
     BullModule.registerQueue({
       name: 'image',
+      // Running jobs in separate processes
+      processors: [
+        {
+          name: 'optimizeImage',
+          path: join(__dirname, 'image.processor.js'),
+        },
+      ],
     }),
   ],
   providers: [ImageProcessor],
