@@ -32,6 +32,7 @@ import { ChargeModule } from './charge/charge.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { StripeWebhookModule } from './stripe-webhook/stripe-webhook.module';
 import { EmailConfirmationModule } from './email-confirmation/email-confirmation.module';
+import { SmsModule } from './sms/sms.module';
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { EmailConfirmationModule } from './email-confirmation/email-confirmation
     SubscriptionsModule,
     StripeWebhookModule,
     EmailConfirmationModule,
+    SmsModule,
     BullModule.forRootAsync({
       // https://github.com/OptimalBits/bull/blob/master/REFERENCE.md#queue
       imports: [ConfigModule],
@@ -97,6 +99,7 @@ import { EmailConfirmationModule } from './email-confirmation/email-confirmation
         TWILIO_ACCOUNT_SID: Joi.string().required(),
         TWILIO_AUTH_TOKEN: Joi.string().required(),
         TWILIO_VERIFICATION_SERVICE_SID: Joi.string().required(),
+        TWILIO_SENDER_PHONE_NUMBER: Joi.string().required(),
         PORT: Joi.number(),
       }),
     }),

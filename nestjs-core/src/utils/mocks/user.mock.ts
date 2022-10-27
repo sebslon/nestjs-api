@@ -8,6 +8,8 @@ export const mockedUser: User = {
   posts: [],
   stripeCustomerId: 'stripe_customer_id',
   isEmailConfirmed: false,
+  phoneNumber: '123456789',
+  isPhoneNumberConfirmed: false,
   address: {
     id: 1,
     street: 'street',

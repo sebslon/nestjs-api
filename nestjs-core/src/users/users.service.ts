@@ -227,4 +227,11 @@ export class UsersService {
       },
     );
   }
+
+  markPhoneNumberAsConfirmed(userId: number) {
+    return this.usersRepository.update(
+      { id: userId },
+      { isPhoneNumberConfirmed: true },
+    );
+  }
 }

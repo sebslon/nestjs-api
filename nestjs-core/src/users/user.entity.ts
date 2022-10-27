@@ -32,6 +32,12 @@ class User {
   public name: string;
 
   @Column()
+  public phoneNumber: string;
+
+  @Column({ default: false })
+  public isPhoneNumberConfirmed: boolean;
+
+  @Column()
   @Exclude()
   public password: string;
 

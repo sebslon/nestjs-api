@@ -66,3 +66,4 @@ Covered topics during building this APIs (service):
 - Stripe - possibility to save and reuse cards / recurring payments via subscriptions (subscriptions)
 - Stripe webhooks handling (webhook) testing: `stripe listen --forward-to localhost:3000/webhook`
 - Emails confirmation with use of JWT tokens generated URL's (email-confirmation)
+- Phone number verification by SMS with Twilio (sms)
