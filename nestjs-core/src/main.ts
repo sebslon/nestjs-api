@@ -5,7 +5,9 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
+
 import { CustomClassSerializerInterceptor } from './utils/interceptors/custom-class-serializer.interceptor';
+import { rawBodyMiddleware } from './utils/middlewares/raw-body.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,6 +25,8 @@ async function bootstrap() {
     origin: configService.get('FRONTEND_URL'),
     credentials: true,
   });
+
+  app.use(rawBodyMiddleware());
 
   config.update({
     accessKeyId: configService.get('AWS_ACCESS_KEY_ID'),

@@ -30,6 +30,7 @@ import { PubSubModule } from './pub-sub/pub-sub.module';
 import { OptimizeModule } from './optimize/optimize.module';
 import { ChargeModule } from './charge/charge.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
+import { StripeWebhookModule } from './stripe-webhook/stripe-webhook.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
     OptimizeModule,
     ChargeModule,
     SubscriptionsModule,
+    StripeWebhookModule,
     BullModule.forRootAsync({
       // https://github.com/OptimalBits/bull/blob/master/REFERENCE.md#queue
       imports: [ConfigModule],
@@ -82,6 +84,7 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
         STRIPE_SECRET_KEY: Joi.string(),
         STRIPE_CURRENCY: Joi.string(),
         STRIPE_SUBSCRIPTION_TRIAL_PERIOD: Joi.number(),
+        STRIPE_WEBHOOK_SECRET: Joi.string(),
         MONTHLY_SUBSCRIPTION_PRICE_ID: Joi.string(),
         FRONTEND_URL: Joi.string(),
         PORT: Joi.number(),

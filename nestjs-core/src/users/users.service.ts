@@ -208,4 +208,14 @@ export class UsersService {
       currentHashedRefreshToken: null,
     });
   }
+
+  async updateMonthlySubscriptionStatus(
+    stripeCustomerId: string,
+    monthlySubscriptionStatus: string,
+  ) {
+    return this.usersRepository.update(
+      { stripeCustomerId },
+      { monthlySubscriptionStatus },
+    );
+  }
 }

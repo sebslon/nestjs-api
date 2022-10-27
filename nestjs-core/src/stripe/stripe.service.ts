@@ -89,4 +89,14 @@ export default class StripeService {
       expand: ['data.latest_invoice', 'data.latest_invoice.payment_intent'],
     });
   }
+
+  public async constructEventFromPayload(signature: string, payload: Buffer) {
+    const webhookSecret = this.configService.get('STRIPE_WEBHOOK_SECRET');
+
+    return this.stripe.webhooks.constructEvent(
+      payload,
+      signature,
+      webhookSecret,
+    );
+  }
 }
