@@ -17,6 +17,7 @@ import { RequestWithUser } from './types/request-with-user';
 
 import { UsersService } from '../users/users.service';
 import { AuthenticationService } from './authentication.service';
+import { EmailConfirmationService } from '../email-confirmation/email-confirmation.service';
 
 import LocalAuthenticationGuard from './guards/local-authentication.guard';
 import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
@@ -28,6 +29,7 @@ export class AuthenticationController {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly usersService: UsersService,
+    private readonly emailConfirmationService: EmailConfirmationService,
   ) {}
 
   @UseGuards(JwtAuthenticationGuard)
@@ -39,7 +41,13 @@ export class AuthenticationController {
 
   @Post('register')
   async register(@Body() registrationData: RegisterDto) {
-    return this.authenticationService.register(registrationData);
+    const user = await this.authenticationService.register(registrationData);
+
+    await this.emailConfirmationService.sendVerificationLink(
+      registrationData.email,
+    );
+
+    return user;
   }
 
   @HttpCode(200)

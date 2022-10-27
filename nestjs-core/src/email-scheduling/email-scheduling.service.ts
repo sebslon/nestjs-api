@@ -2,7 +2,8 @@ import { CronJob } from 'cron';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { Injectable } from '@nestjs/common';
 
-import EmailService from '../email/email.service';
+import { EmailService } from '../email/email.service';
+
 import EmailScheduleDto from './dto/email-schedule.dto';
 
 @Injectable()

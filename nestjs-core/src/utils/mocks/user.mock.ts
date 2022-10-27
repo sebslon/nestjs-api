@@ -7,6 +7,7 @@ export const mockedUser: User = {
   password: 'hash',
   posts: [],
   stripeCustomerId: 'stripe_customer_id',
+  isEmailConfirmed: false,
   address: {
     id: 1,
     street: 'street',

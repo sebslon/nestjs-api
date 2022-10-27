@@ -31,6 +31,7 @@ import { OptimizeModule } from './optimize/optimize.module';
 import { ChargeModule } from './charge/charge.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { StripeWebhookModule } from './stripe-webhook/stripe-webhook.module';
+import { EmailConfirmationModule } from './email-confirmation/email-confirmation.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { StripeWebhookModule } from './stripe-webhook/stripe-webhook.module';
     ChargeModule,
     SubscriptionsModule,
     StripeWebhookModule,
+    EmailConfirmationModule,
     BullModule.forRootAsync({
       // https://github.com/OptimalBits/bull/blob/master/REFERENCE.md#queue
       imports: [ConfigModule],
@@ -87,6 +89,14 @@ import { StripeWebhookModule } from './stripe-webhook/stripe-webhook.module';
         STRIPE_WEBHOOK_SECRET: Joi.string(),
         MONTHLY_SUBSCRIPTION_PRICE_ID: Joi.string(),
         FRONTEND_URL: Joi.string(),
+        // Email confirmation
+        JWT_VERIFICATION_TOKEN_SECRET: Joi.string().required(),
+        JWT_VERIFICATION_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        EMAIL_CONFIRMATION_URL: Joi.string().required(),
+        // Verifying phone numbers with Twilio
+        TWILIO_ACCOUNT_SID: Joi.string().required(),
+        TWILIO_AUTH_TOKEN: Joi.string().required(),
+        TWILIO_VERIFICATION_SERVICE_SID: Joi.string().required(),
         PORT: Joi.number(),
       }),
     }),
