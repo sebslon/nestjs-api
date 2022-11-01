@@ -19,4 +19,5 @@ export const mockedUser: User = {
   files: [],
   comments: [],
   isTwoFactorAuthenticationEnabled: false,
+  isRegisteredWithGoogle: false,
 };

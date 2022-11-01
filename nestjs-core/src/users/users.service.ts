@@ -234,4 +234,18 @@ export class UsersService {
       { isPhoneNumberConfirmed: true },
     );
   }
+
+  async createWithGoogle(email: string, name: string) {
+    const stripeCustomer = await this.stripeService.createCustomer(name, email);
+
+    const newUser = await this.usersRepository.create({
+      email,
+      name,
+      isRegisteredWithGoogle: true,
+      stripeCustomerId: stripeCustomer.id,
+    });
+
+    await this.usersRepository.save(newUser);
+    return newUser;
+  }
 }

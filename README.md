@@ -67,3 +67,4 @@ Covered topics during building this APIs (service):
 - Stripe webhooks handling (webhook) testing: `stripe listen --forward-to localhost:3000/webhook`
 - Emails confirmation with use of JWT tokens generated URL's (email-confirmation)
 - Phone number verification by SMS with Twilio (sms)
+- Authentication with Google (OAuth, google-authentication)

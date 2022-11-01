@@ -37,9 +37,9 @@ class User {
   @Column({ default: false })
   public isPhoneNumberConfirmed: boolean;
 
-  @Column()
+  @Column({ nullable: true })
   @Exclude()
-  public password: string;
+  public password?: string;
 
   @Column({ nullable: true })
   @Exclude()
@@ -76,5 +76,8 @@ class User {
 
   @Column({ nullable: true })
   public monthlySubscriptionStatus?: string;
+
+  @Column({ default: false })
+  public isRegisteredWithGoogle: boolean;
 }
 export default User;
