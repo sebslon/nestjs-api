@@ -2,7 +2,7 @@ import * as Joi from '@hapi/joi';
 import { join } from 'path';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { BullModule } from '@nestjs/bull';
@@ -34,6 +34,8 @@ import { StripeWebhookModule } from './stripe-webhook/stripe-webhook.module';
 import { EmailConfirmationModule } from './email-confirmation/email-confirmation.module';
 import { SmsModule } from './sms/sms.module';
 import { GoogleAuthenticationModule } from './google-authentication/google-authentication.module';
+import { LogsMiddleware } from './utils/middlewares/logs.middleware';
+import { LoggerModule } from './logs/logs.module';
 
 @Module({
   imports: [
@@ -54,6 +56,7 @@ import { GoogleAuthenticationModule } from './google-authentication/google-authe
     EmailConfirmationModule,
     SmsModule,
     GoogleAuthenticationModule,
+    LoggerModule,
     BullModule.forRootAsync({
       // https://github.com/OptimalBits/bull/blob/master/REFERENCE.md#queue
       imports: [ConfigModule],
@@ -134,4 +137,8 @@ import { GoogleAuthenticationModule } from './google-authentication/google-authe
     TimestampScalar,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LogsMiddleware).forRoutes('*');
+  }
+}

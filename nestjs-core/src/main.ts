@@ -8,9 +8,16 @@ import { AppModule } from './app.module';
 
 import { CustomClassSerializerInterceptor } from './utils/interceptors/custom-class-serializer.interceptor';
 import { rawBodyMiddleware } from './utils/middlewares/raw-body.middleware';
+import { getLogLevels } from './utils/get-log-levels';
+
+import CustomLogger from './logs/custom.logger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    logger: getLogLevels(process.env.NODE_ENV === 'production'),
+  });
+
+  app.useLogger(app.get(CustomLogger));
 
   app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe());

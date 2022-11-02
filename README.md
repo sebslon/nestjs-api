@@ -68,3 +68,4 @@ Covered topics during building this APIs (service):
 - Emails confirmation with use of JWT tokens generated URL's (email-confirmation)
 - Phone number verification by SMS with Twilio (sms)
 - Authentication with Google (OAuth, google-authentication)
+- Logging with built-in logger (logs.middleware.ts, database-logger.ts (SQL)) and implementing custom loggers (logs module)
