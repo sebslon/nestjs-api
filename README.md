@@ -69,3 +69,4 @@ Covered topics during building this APIs (service):
 - Phone number verification by SMS with Twilio (sms)
 - Authentication with Google (OAuth, google-authentication)
 - Logging with built-in logger (logs.middleware.ts, database-logger.ts (SQL)) and implementing custom loggers (logs module)
+- Health checks with Terminus and performing them with Datadog

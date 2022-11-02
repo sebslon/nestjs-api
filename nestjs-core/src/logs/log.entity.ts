@@ -10,8 +10,8 @@ export class Log {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column()
-  public context: string;
+  @Column({ nullable: true })
+  public context?: string;
 
   @Column()
   public message: string;
