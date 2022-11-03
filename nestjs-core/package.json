@@ -16,9 +16,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "documentation:serve": "npx @compodoc/compodoc -p tsconfig.json --serve"
   },
   "dependencies": {
+    "@compodoc/compodoc": "^1.1.19",
     "@elastic/elasticsearch": "7.9.1",
     "@grpc/grpc-js": "^1.7.2",
     "@hapi/joi": "^17.1.1",

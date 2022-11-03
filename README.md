@@ -6,6 +6,7 @@
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
   <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+  <p align="center"><b>Thanks to wanago.io for his comprehensive blog and Nest.js API Course</b><p>
 
 ## Repository description
 
@@ -70,3 +71,4 @@ Covered topics during building this APIs (service):
 - Authentication with Google (OAuth, google-authentication)
 - Logging with built-in logger (logs.middleware.ts, database-logger.ts (SQL)) and implementing custom loggers (logs module)
 - Health checks with Terminus and performing them with Datadog
+- Generating documentation with Compodoc and JSDoc `npm run documentation:serve`
