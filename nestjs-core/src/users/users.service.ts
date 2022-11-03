@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import { DataSource, In, Repository } from 'typeorm';
+import { Connection, DataSource, In, Repository } from 'typeorm';
 import {
   HttpException,
   HttpStatus,
@@ -10,12 +10,14 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { FilesService } from 'src/files/files.service';
+import StripeService from '../stripe/stripe.service';
+import { FilesService } from '../files/files.service';
 import { PrivateFilesService } from '../files-private/private-files.service';
+import { DatabaseFilesService } from '../files-database/database-files.service';
 
 import CreateUserDto from './dto/create-user.dto';
+
 import User from './user.entity';
-import StripeService from 'src/stripe/stripe.service';
 
 @Injectable()
 export class UsersService {
@@ -26,6 +28,7 @@ export class UsersService {
     private stripeService: StripeService,
     private readonly filesService: FilesService,
     private readonly privateFilesService: PrivateFilesService,
+    private readonly databaseFilesService: DatabaseFilesService,
   ) {}
 
   async getById(id: number) {
@@ -103,25 +106,68 @@ export class UsersService {
     await this.usersRepository.update(userId, { currentHashedRefreshToken });
   }
 
+  // Avatar saved in Amazon S3
+  // async addAvatar(userId: number, imageBuffer: Buffer, filename: string) {
+  //   // TODO: Check size of image, compress etc.
+  //   const user = await this.getById(userId);
+
+  //   if (user.avatar) {
+  //     await this.usersRepository.update(userId, {
+  //       ...user,
+  //       avatar: null,
+  //     });
+  //     await this.filesService.deletePublicFile(user.avatar.id);
+  //   }
+
+  //   const avatar = await this.filesService.uploadPublicFile(
+  //     imageBuffer,
+  //     filename,
+  //   );
+
+  //   await this.usersRepository.update(userId, { ...user, avatar });
+  //   return avatar;
+  // }
+
+  // Avatar saved in database
   async addAvatar(userId: number, imageBuffer: Buffer, filename: string) {
-    // TODO: Check size of image, compress etc.
-    const user = await this.getById(userId);
+    const queryRunner = this.dataSource.createQueryRunner();
 
-    if (user.avatar) {
-      await this.usersRepository.update(userId, {
-        ...user,
-        avatar: null,
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const user = await queryRunner.manager.findOne(User, {
+        where: { id: userId },
       });
-      await this.filesService.deletePublicFile(user.avatar.id);
+
+      const currentAvatarId = user.avatarId;
+      const avatar =
+        await this.databaseFilesService.uploadDatabaseFileWithQueryRunner(
+          imageBuffer,
+          filename,
+          queryRunner,
+        );
+
+      await queryRunner.manager.update(User, userId, {
+        avatarId: avatar.id,
+      });
+
+      if (currentAvatarId) {
+        await this.databaseFilesService.deleteFileWithQueryRunner(
+          currentAvatarId,
+          queryRunner,
+        );
+      }
+
+      await queryRunner.commitTransaction();
+
+      return avatar;
+    } catch {
+      await queryRunner.rollbackTransaction();
+      throw new InternalServerErrorException();
+    } finally {
+      await queryRunner.release();
     }
-
-    const avatar = await this.filesService.uploadPublicFile(
-      imageBuffer,
-      filename,
-    );
-
-    await this.usersRepository.update(userId, { ...user, avatar });
-    return avatar;
   }
 
   async deleteAvatar(userId: number) {

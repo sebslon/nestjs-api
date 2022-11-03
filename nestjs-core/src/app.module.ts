@@ -37,6 +37,7 @@ import { GoogleAuthenticationModule } from './google-authentication/google-authe
 import { LogsMiddleware } from './utils/middlewares/logs.middleware';
 import { LoggerModule } from './logs/logs.module';
 import { HealthModule } from './health/health.module';
+import { DatabaseFilesModule } from './files-database/database-files.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { HealthModule } from './health/health.module';
     GoogleAuthenticationModule,
     LoggerModule,
     HealthModule,
+    DatabaseFilesModule,
     BullModule.forRootAsync({
       // https://github.com/OptimalBits/bull/blob/master/REFERENCE.md#queue
       imports: [ConfigModule],

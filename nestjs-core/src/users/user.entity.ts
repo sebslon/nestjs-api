@@ -14,6 +14,7 @@ import Post from '../posts/post.entity';
 import Comment from '../comments/comment.entity';
 import PublicFile from '../files/public-file.entity';
 import PrivateFile from '../files-private/private-file.entity';
+import DatabaseFile from '../files-database/database-file.entity';
 
 @Entity()
 class User {
@@ -55,9 +56,16 @@ class User {
   @OneToMany(() => Post, (post: Post) => post.author)
   public posts: Post[];
 
-  @OneToOne(() => PublicFile, { eager: true, nullable: true })
-  @JoinColumn()
-  public avatar?: PublicFile;
+  // @OneToOne(() => PublicFile, { eager: true, nullable: true })
+  // @JoinColumn()
+  // public avatar?: PublicFile;
+
+  @JoinColumn({ name: 'avatarId', referencedColumnName: 'id' })
+  @OneToOne(() => DatabaseFile, {
+    nullable: true,
+  })
+  public avatar?: DatabaseFile;
+  public avatarId?: number;
 
   @OneToMany(() => Comment, (comment: Comment) => comment.author)
   public comments: Comment[];

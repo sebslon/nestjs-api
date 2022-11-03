@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { FilesModule } from '../files/files.module';
 import { PrivateFilesModule } from '../files-private/private-file.module';
+import { DatabaseFilesModule } from '../files-database/database-files.module';
 import { StripeModule } from '../stripe/stripe.module';
 
 import { UsersController } from './users.controller';
@@ -16,6 +17,7 @@ import User from './user.entity';
     TypeOrmModule.forFeature([User]),
     FilesModule,
     PrivateFilesModule,
+    DatabaseFilesModule,
     StripeModule,
   ],
   // A provider is something that can inject dependencies. An example of such is a service.
