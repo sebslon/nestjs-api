@@ -72,3 +72,4 @@ Covered topics during building this APIs (service):
 - Logging with built-in logger (logs.middleware.ts, database-logger.ts (SQL)) and implementing custom loggers (logs module)
 - Health checks with Terminus and performing them with Datadog
 - Generating documentation with Compodoc and JSDoc `npm run documentation:serve`
+- Soft deletes with TypeORM (categories)

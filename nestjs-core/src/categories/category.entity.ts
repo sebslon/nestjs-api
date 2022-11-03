@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  DeleteDateColumn,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import Post from '../posts/post.entity';
 
@@ -12,6 +18,9 @@ class Category {
 
   @ManyToMany(() => Post, (post: Post) => post.categories)
   public posts: Post[];
+
+  @DeleteDateColumn()
+  public deletedAt: Date;
 }
 
 export default Category;

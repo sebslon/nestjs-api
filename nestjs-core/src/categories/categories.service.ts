@@ -22,6 +22,7 @@ export class CategoriesService {
     const category = await this.categoriesRepository.findOne({
       where: { id },
       relations: ['posts'],
+      withDeleted: true,
     });
 
     if (category) return category;
@@ -31,5 +32,17 @@ export class CategoriesService {
 
   async updateCategory(id: number, category: UpdateCategoryDto) {
     await this.categoriesRepository.update(id, category);
+  }
+
+  async deleteCategory(id: number): Promise<void> {
+    const deleteResponse = await this.categoriesRepository.softDelete(id);
+    if (!deleteResponse.affected) throw new CategoryNotFoundException(id);
+  }
+
+  async restoreDeletedCategory(id: number) {
+    const restoreResponse = await this.categoriesRepository.restore(id);
+    if (!restoreResponse.affected) {
+      throw new CategoryNotFoundException(id);
+    }
   }
 }
