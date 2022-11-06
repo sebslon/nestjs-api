@@ -111,6 +111,7 @@ import { DatabaseFilesModule } from './files-database/database-files.module';
         TWILIO_SENDER_PHONE_NUMBER: Joi.string().required(),
         GOOGLE_AUTH_CLIENT_ID: Joi.string().required(),
         GOOGLE_AUTH_CLIENT_SECRET: Joi.string().required(),
+        UPLOADED_FILES_DESTINATION: Joi.string().required(),
         PORT: Joi.number(),
       }),
     }),

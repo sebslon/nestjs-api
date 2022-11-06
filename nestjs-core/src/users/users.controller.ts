@@ -1,6 +1,7 @@
 import { Express, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
+  BadRequestException,
   Controller,
   Delete,
   Get,
@@ -16,10 +17,11 @@ import {
 import { FindOneParams } from '../utils/validators/param/find-one-params';
 
 import { RequestWithUser } from '../authentication/types/request-with-user';
-
 import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
 
 import { UsersService } from './users.service';
+
+import { LocalFilesInterceptor } from '../utils/interceptors/local-files.interceptor';
 
 @Controller('users')
 export class UsersController {
@@ -72,16 +74,30 @@ export class UsersController {
 
   @Post('avatar')
   @UseGuards(JwtAuthenticationGuard)
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(
+    LocalFilesInterceptor({
+      fieldName: 'file',
+      path: '/avatars',
+      fileFilter: (req, file, cb) => {
+        if (!file.mimetype.includes('image')) {
+          return cb(new BadRequestException('Provide a valid image'), false);
+        }
+        cb(null, true);
+      },
+      limits: {
+        fileSize: Math.pow(1024, 2), // 1mb
+      },
+    }),
+  )
   async addAvatar(
     @Req() request: RequestWithUser,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.usersService.addAvatar(
-      request.user.id,
-      file.buffer,
-      file.originalname,
-    );
+    return this.usersService.addAvatar(request.user.id, {
+      path: file.path,
+      filename: file.originalname,
+      mimetype: file.mimetype,
+    });
   }
 
   @Delete('avatar')

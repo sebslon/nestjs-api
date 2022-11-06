@@ -14,6 +14,7 @@ import StripeService from '../stripe/stripe.service';
 import { FilesService } from '../files/files.service';
 import { PrivateFilesService } from '../files-private/private-files.service';
 import { DatabaseFilesService } from '../files-database/database-files.service';
+import { LocalFilesService } from '../files-local/local-files.service';
 
 import CreateUserDto from './dto/create-user.dto';
 
@@ -29,6 +30,7 @@ export class UsersService {
     private readonly filesService: FilesService,
     private readonly privateFilesService: PrivateFilesService,
     private readonly databaseFilesService: DatabaseFilesService,
+    private localFilesService: LocalFilesService,
   ) {}
 
   async getById(id: number) {
@@ -129,45 +131,53 @@ export class UsersService {
   // }
 
   // Avatar saved in database
-  async addAvatar(userId: number, imageBuffer: Buffer, filename: string) {
-    const queryRunner = this.dataSource.createQueryRunner();
+  // async addAvatar(userId: number, imageBuffer: Buffer, filename: string) {
+  //   const queryRunner = this.dataSource.createQueryRunner();
 
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+  //   await queryRunner.connect();
+  //   await queryRunner.startTransaction();
 
-    try {
-      const user = await queryRunner.manager.findOne(User, {
-        where: { id: userId },
-      });
+  //   try {
+  //     const user = await queryRunner.manager.findOne(User, {
+  //       where: { id: userId },
+  //     });
 
-      const currentAvatarId = user.avatarId;
-      const avatar =
-        await this.databaseFilesService.uploadDatabaseFileWithQueryRunner(
-          imageBuffer,
-          filename,
-          queryRunner,
-        );
+  //     const currentAvatarId = user.avatarId;
+  //     const avatar =
+  //       await this.databaseFilesService.uploadDatabaseFileWithQueryRunner(
+  //         imageBuffer,
+  //         filename,
+  //         queryRunner,
+  //       );
 
-      await queryRunner.manager.update(User, userId, {
-        avatarId: avatar.id,
-      });
+  //     await queryRunner.manager.update(User, userId, {
+  //       avatarId: avatar.id,
+  //     });
 
-      if (currentAvatarId) {
-        await this.databaseFilesService.deleteFileWithQueryRunner(
-          currentAvatarId,
-          queryRunner,
-        );
-      }
+  //     if (currentAvatarId) {
+  //       await this.databaseFilesService.deleteFileWithQueryRunner(
+  //         currentAvatarId,
+  //         queryRunner,
+  //       );
+  //     }
 
-      await queryRunner.commitTransaction();
+  //     await queryRunner.commitTransaction();
 
-      return avatar;
-    } catch {
-      await queryRunner.rollbackTransaction();
-      throw new InternalServerErrorException();
-    } finally {
-      await queryRunner.release();
-    }
+  //     return avatar;
+  //   } catch {
+  //     await queryRunner.rollbackTransaction();
+  //     throw new InternalServerErrorException();
+  //   } finally {
+  //     await queryRunner.release();
+  //   }
+  // }
+
+  // Avatar saved on local disk
+  async addAvatar(userId: number, fileData: LocalFileDto) {
+    const avatar = await this.localFilesService.saveLocalFileData(fileData);
+    await this.usersRepository.update(userId, {
+      avatarId: avatar.id,
+    });
   }
 
   async deleteAvatar(userId: number) {

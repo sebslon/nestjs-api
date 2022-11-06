@@ -74,3 +74,4 @@ Covered topics during building this APIs (service):
 - Generating documentation with Compodoc and JSDoc `npm run documentation:serve`
 - Soft deletes with TypeORM (categories)
 - Storing files in PostgreSQL database (binary data - avatars) / updating user avatar with transactions
+- Storing files on local disk (files-local, avatars)

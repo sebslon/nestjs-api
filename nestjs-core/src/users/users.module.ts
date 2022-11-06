@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { FilesModule } from '../files/files.module';
 import { PrivateFilesModule } from '../files-private/private-file.module';
 import { DatabaseFilesModule } from '../files-database/database-files.module';
 import { StripeModule } from '../stripe/stripe.module';
+import { LocalFilesModule } from 'src/files-local/local-files.module';
 
 import { UsersController } from './users.controller';
 
@@ -18,7 +20,9 @@ import User from './user.entity';
     FilesModule,
     PrivateFilesModule,
     DatabaseFilesModule,
+    LocalFilesModule,
     StripeModule,
+    ConfigModule,
   ],
   // A provider is something that can inject dependencies. An example of such is a service.
   // We put the  UsersService into the  providers array of the  UsersModule to state that it belongs to that module.

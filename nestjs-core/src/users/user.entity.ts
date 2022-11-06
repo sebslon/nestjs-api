@@ -15,6 +15,7 @@ import Comment from '../comments/comment.entity';
 import PublicFile from '../files/public-file.entity';
 import PrivateFile from '../files-private/private-file.entity';
 import DatabaseFile from '../files-database/database-file.entity';
+import LocalFile from 'src/files-local/local-file.entity';
 
 @Entity()
 class User {
@@ -60,11 +61,19 @@ class User {
   // @JoinColumn()
   // public avatar?: PublicFile;
 
-  @JoinColumn({ name: 'avatarId', referencedColumnName: 'id' })
-  @OneToOne(() => DatabaseFile, {
+  // @JoinColumn({ name: 'avatarId', referencedColumnName: 'id' })
+  // @OneToOne(() => DatabaseFile, {
+  //   nullable: true,
+  // })
+  // public avatar?: DatabaseFile;
+  // public avatarId?: number;
+  @JoinColumn({ name: 'avatarId' })
+  @OneToOne(() => LocalFile, {
     nullable: true,
   })
-  public avatar?: DatabaseFile;
+  public avatar?: LocalFile;
+
+  @Column({ nullable: true })
   public avatarId?: number;
 
   @OneToMany(() => Comment, (comment: Comment) => comment.author)
