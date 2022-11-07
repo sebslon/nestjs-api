@@ -26,6 +26,12 @@ import { RequestWithUser } from '../authentication/types/request-with-user';
 import { GET_POSTS_CACHE_KEY } from './constants/posts-cache-key.constant';
 import { HttpCacheInterceptor } from './cache/http-cache.interceptor';
 
+import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
+import RoleGuard from '../authorization/role.guard';
+import Role from '../authorization/role.enum';
+import PermissionGuard from 'src/authorization/permission.guard';
+import PostsPermission from 'src/authorization/permissions/posts-permission.enum';
+
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
@@ -62,6 +68,8 @@ export class PostsController {
   }
 
   @Delete(':id')
+  @UseGuards(RoleGuard(Role.Admin))
+  @UseGuards(PermissionGuard(PostsPermission.DeletePost))
   async deletePost(@Param('id') id: string) {
     this.postsService.deletePost(Number(id));
   }

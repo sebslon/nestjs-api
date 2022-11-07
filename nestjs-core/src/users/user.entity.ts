@@ -17,6 +17,9 @@ import PrivateFile from '../files-private/private-file.entity';
 import DatabaseFile from '../files-database/database-file.entity';
 import LocalFile from 'src/files-local/local-file.entity';
 
+import Role from '../authorization/role.enum';
+import Permission from 'src/authorization/permission.type';
+
 @Entity()
 class User {
   @PrimaryGeneratedColumn()
@@ -96,5 +99,20 @@ class User {
 
   @Column({ default: false })
   public isRegisteredWithGoogle: boolean;
+
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.User,
+  })
+  public role: Role;
+
+  @Column({
+    type: 'enum',
+    enum: Permission,
+    array: true,
+    default: [],
+  })
+  public permissions: Permission[];
 }
 export default User;

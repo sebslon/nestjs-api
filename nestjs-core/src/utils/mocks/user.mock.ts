@@ -1,4 +1,5 @@
 import User from '../../users/user.entity';
+import Role from '../../authorization/role.enum';
 
 export const mockedUser: User = {
   id: 1,
@@ -20,4 +21,6 @@ export const mockedUser: User = {
   comments: [],
   isTwoFactorAuthenticationEnabled: false,
   isRegisteredWithGoogle: false,
+  role: Role.User,
+  permissions: [],
 };

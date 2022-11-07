@@ -17,6 +17,7 @@ import { DatabaseFilesService } from '../files-database/database-files.service';
 import { LocalFilesService } from '../files-local/local-files.service';
 
 import CreateUserDto from './dto/create-user.dto';
+import { LocalFileDto } from '../files-local/dto/local-file.dto';
 
 import User from './user.entity';
 

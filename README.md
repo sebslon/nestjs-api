@@ -75,3 +75,4 @@ Covered topics during building this APIs (service):
 - Soft deletes with TypeORM (categories)
 - Storing files in PostgreSQL database (binary data - avatars) / updating user avatar with transactions
 - Storing files on local disk (files-local, avatars)
+- RBAC and claims-based authorization (authorization, posts:delete)
