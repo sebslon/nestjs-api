@@ -72,6 +72,7 @@ Covered topics during building this APIs (service):
 - Logging with built-in logger (logs.middleware.ts, database-logger.ts (SQL)) and implementing custom loggers (logs module)
 - Health checks with Terminus and performing them with Datadog
 - Generating documentation with Compodoc and JSDoc `npm run documentation:serve`
+- Generating documentation with Swagger (using decorators for better docs @ApiResponse etc.)
 - Soft deletes with TypeORM (categories)
 - Storing files in PostgreSQL database (binary data - avatars) / updating user avatar with transactions
 - Storing files on local disk (files-local, avatars)

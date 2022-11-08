@@ -10,7 +10,9 @@ import {
   Get,
   SerializeOptions,
 } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
 
+import LogInDto from './dto/log-in.dto';
 import RegisterDto from './dto/register.dto';
 
 import { RequestWithUser } from './types/request-with-user';
@@ -52,6 +54,7 @@ export class AuthenticationController {
 
   @HttpCode(200)
   @UseGuards(LocalAuthenticationGuard)
+  @ApiBody({ type: LogInDto })
   @Post('log-in')
   async logIn(@Req() request: RequestWithUser) {
     const { user } = request;

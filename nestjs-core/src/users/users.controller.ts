@@ -19,6 +19,9 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+
+import FileUploadDto from './dto/file-upload.dto';
 
 import { FindOneParams } from '../utils/validators/param/find-one-params';
 
@@ -99,6 +102,11 @@ export class UsersController {
       },
     }),
   )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'A new avatar for the user',
+    type: FileUploadDto,
+  })
   async addAvatar(
     @Req() request: RequestWithUser,
     @UploadedFile() file: Express.Multer.File,
