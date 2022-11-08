@@ -76,3 +76,4 @@ Covered topics during building this APIs (service):
 - Storing files in PostgreSQL database (binary data - avatars) / updating user avatar with transactions
 - Storing files on local disk (files-local, avatars)
 - RBAC and claims-based authorization (authorization, posts:delete)
+- Client Side Caching with entity tag response header (ETag / GET users/avatar) - there is a possibility to customize creating eTags (strong/weak)

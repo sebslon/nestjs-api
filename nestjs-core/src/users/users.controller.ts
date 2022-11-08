@@ -1,14 +1,20 @@
-import { Express, Response } from 'express';
+import etag from 'etag';
+import { join } from 'path';
+import { readFileSync } from 'fs';
+import { Express, Response, Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
   BadRequestException,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
+  ParseIntPipe,
   Post,
   Req,
   Res,
+  StreamableFile,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -20,12 +26,16 @@ import { RequestWithUser } from '../authentication/types/request-with-user';
 import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
 
 import { UsersService } from './users.service';
+import { LocalFilesService } from 'src/files-local/local-files.service';
 
 import { LocalFilesInterceptor } from '../utils/interceptors/local-files.interceptor';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly localFilesService: LocalFilesService,
+  ) {}
 
   @Post('files')
   @UseGuards(JwtAuthenticationGuard)
@@ -104,5 +114,38 @@ export class UsersController {
   @UseGuards(JwtAuthenticationGuard)
   async deleteAvatar(@Req() request: RequestWithUser) {
     return this.usersService.deleteAvatar(request.user.id);
+  }
+
+  @Get('userId/avatar')
+  async getAvatar(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Res({ passthrough: true }) response: Response,
+    @Req() request: Request,
+  ) {
+    const user = await this.usersService.getById(userId);
+    const fileId = user.avatarId;
+
+    if (!fileId) throw new NotFoundException();
+
+    const fileMetadata = await this.localFilesService.getFileById(fileId);
+    const pathOnDisk = join(process.cwd(), fileMetadata.path);
+    const file = readFileSync(pathOnDisk);
+
+    const tag = etag(file);
+    // const tag = `W/"file-id-${fileId}"`; // Custom weak etag
+
+    response.set({
+      'Content-Disposition': `inline; filename="${fileMetadata.filename}"`,
+      'Content-Type': fileMetadata.mimetype,
+      ETag: tag,
+    });
+
+    if (request.headers['if-none-match'] === tag) {
+      // second request - browser then knows that the image didn't change and it can use the cached version
+      response.status(304);
+      return;
+    }
+
+    return new StreamableFile(file);
   }
 }
