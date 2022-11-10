@@ -12,13 +12,13 @@ import { Exclude, Expose } from 'class-transformer';
 import Address from './address.entity';
 import Post from '../posts/post.entity';
 import Comment from '../comments/comment.entity';
-import PublicFile from '../files/public-file.entity';
 import PrivateFile from '../files-private/private-file.entity';
-import DatabaseFile from '../files-database/database-file.entity';
-import LocalFile from 'src/files-local/local-file.entity';
+// import PublicFile from '../files/public-file.entity';
+// import DatabaseFile from '../files-database/database-file.entity';
+import LocalFile from '../files-local/local-file.entity';
 
 import Role from '../authorization/role.enum';
-import Permission from 'src/authorization/permission.type';
+import Permission from '../authorization/permission.type';
 
 @Entity()
 class User {

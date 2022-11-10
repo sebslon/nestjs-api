@@ -29,7 +29,7 @@ import { RequestWithUser } from '../authentication/types/request-with-user';
 import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
 
 import { UsersService } from './users.service';
-import { LocalFilesService } from 'src/files-local/local-files.service';
+import { LocalFilesService } from '../files-local/local-files.service';
 
 import { LocalFilesInterceptor } from '../utils/interceptors/local-files.interceptor';
 

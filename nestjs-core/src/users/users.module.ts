@@ -7,7 +7,7 @@ import { FilesModule } from '../files/files.module';
 import { PrivateFilesModule } from '../files-private/private-file.module';
 import { DatabaseFilesModule } from '../files-database/database-files.module';
 import { StripeModule } from '../stripe/stripe.module';
-import { LocalFilesModule } from 'src/files-local/local-files.module';
+import { LocalFilesModule } from '../files-local/local-files.module';
 
 import { UsersController } from './users.controller';
 

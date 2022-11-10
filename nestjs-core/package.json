@@ -8,6 +8,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
+    "start:repl": "nest start --entryFile repl",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -17,7 +18,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "documentation:serve": "npx @compodoc/compodoc -p tsconfig.json --serve"
+    "documentation:serve": "npx @compodoc/compodoc -p tsconfig.json --serve",
+    "typeorm": "ts-node ./node_modules/typeorm/cli",
+    "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./typeOrm.config.ts",
+    "typeorm:generate-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:generate ./migrations/$npm_config_name",
+    "typeorm:create-migration": "npm run typeorm -- migration:create ./migrations/$npm_config_name",
+    "typeorm:revert-migration": "npm run typeorm -- -d ./typeOrm.config.ts migration:revert"
   },
   "dependencies": {
     "@compodoc/compodoc": "^1.1.19",
@@ -58,6 +64,7 @@
     "cookie": "^0.5.0",
     "cookie-parser": "^1.4.6",
     "dataloader": "^2.1.0",
+    "eslint-plugin-import": "^2.26.0",
     "etag": "^1.8.1",
     "googleapis": "^109.0.0",
     "graphql": "^16.6.0",

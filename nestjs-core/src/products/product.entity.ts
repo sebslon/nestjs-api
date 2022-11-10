@@ -3,7 +3,7 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BookProperties } from './types/book-properties.interface';
 import { CarProperties } from './types/car-properties.interface';
 
-import ProductCategory from 'src/product-categories/product-category.entity';
+import ProductCategory from '../product-categories/product-category.entity';
 
 @Entity()
 class Product {

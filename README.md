@@ -78,3 +78,4 @@ Covered topics during building this APIs (service):
 - Storing files on local disk (files-local, avatars)
 - RBAC and claims-based authorization (authorization, posts:delete)
 - Client Side Caching with entity tag response header (ETag / GET users/avatar) - there is a possibility to customize creating eTags (strong/weak)
+- Running REPL in Nest.js (repl.ts)
