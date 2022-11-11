@@ -1,6 +1,6 @@
 import { ConfigurableModuleBuilder } from '@nestjs/common';
 
-import { EmailOptions } from './email-options.interface';
+import { EmailOptions } from './types/email-options.interface';
 
 export const {
   ConfigurableModuleClass: ConfigurableEmailModule,

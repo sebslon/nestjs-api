@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-import { EmailModule } from '../email/email.module';
-import EmailSchedulingController from 'src/email-scheduling/email-scheduling.controller';
-import EmailSchedulingService from 'src/email-scheduling/email-scheduling.service';
+import { EmailModule } from '../email.module';
+
+import EmailSchedulingController from './email-scheduling.controller';
+import EmailSchedulingService from './email-scheduling.service';
 
 @Module({
   imports: [

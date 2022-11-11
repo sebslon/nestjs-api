@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 
-import { EmailModule } from './email.module';
-import { UsersModule } from '../users/users.module';
-import { EmailConfirmationService } from 'src/email-confirmation/email-confirmation.service';
-import { EmailConfirmationController } from 'src/email-confirmation/email-confirmation.controller';
+import { EmailModule } from '../email.module';
+import { UsersModule } from '../../users/users.module';
+
+import { EmailConfirmationService } from './email-confirmation.service';
+import { EmailConfirmationController } from './email-confirmation.controller';
+import { FeatureFlagsModule } from 'src/feature-flags/feature-flags.module';
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { EmailConfirmationController } from 'src/email-confirmation/email-confir
       }),
     }),
     JwtModule.register({}),
+    FeatureFlagsModule,
     UsersModule,
   ],
   providers: [EmailConfirmationService],

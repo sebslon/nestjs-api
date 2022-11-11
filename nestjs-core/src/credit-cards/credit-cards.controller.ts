@@ -8,7 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import EmailConfirmationGuard from '../email-confirmation/guards/email-confirmation.guard';
+import EmailConfirmationGuard from '../email/confirmation/guards/email-confirmation.guard';
 import JwtAuthenticationGuard from '../authentication/guards/jwt-authentication.guard';
 
 import { RequestWithUser } from '../authentication/types/request-with-user';

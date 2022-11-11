@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
-import { RequestWithUser } from '../../authentication/types/request-with-user';
+import { RequestWithUser } from '../../../authentication/types/request-with-user';
 
 // block certain endpoints if the user didn’t confirm the email.
 @Injectable()

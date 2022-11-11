@@ -4,7 +4,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 
 import { UsersModule } from '../users/users.module';
-import { EmailConfirmationModule } from '../email-confirmation/email-confirmation.module';
+import { EmailConfirmationModule } from '../email/confirmation/email-confirmation.module';
 
 import { AuthenticationService } from './authentication.service';
 import { TwoFactorAuthenticationService } from '../two-factor/two-factor-authentication.service';

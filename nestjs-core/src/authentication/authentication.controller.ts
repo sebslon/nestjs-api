@@ -19,7 +19,7 @@ import { RequestWithUser } from './types/request-with-user';
 
 import { UsersService } from '../users/users.service';
 import { AuthenticationService } from './authentication.service';
-import { EmailConfirmationService } from '../email-confirmation/email-confirmation.service';
+import { EmailConfirmationService } from '../email/confirmation/email-confirmation.service';
 
 import LocalAuthenticationGuard from './guards/local-authentication.guard';
 import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
