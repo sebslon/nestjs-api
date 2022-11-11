@@ -79,3 +79,4 @@ Covered topics during building this APIs (service):
 - RBAC and claims-based authorization (authorization, posts:delete)
 - Client Side Caching with entity tag response header (ETag / GET users/avatar) - there is a possibility to customize creating eTags (strong/weak)
 - Running REPL in Nest.js (repl.ts)
+- Definind dynamic modules (email/email-confirmation/email-scheduling)
